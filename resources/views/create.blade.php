@@ -10,7 +10,7 @@
         <div class="card">
             <div class="card-header">
                 <h4>New Post</h4>
-                <a href="{{ route('posts.index') }}" class="btn btn-sm btn-outline-success float-end">Back</a>
+                <a href="{{ route('posts.index') }}" class="btn btn-sm btn-outline-success float-end">Home</a>
                 {{-- <a href="" class="btn btn-sm btn-outline-secondary float-end" style="margin-right: 5px">Trash</a> --}}
             </div>
             <div class="card-body">

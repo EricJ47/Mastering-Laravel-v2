@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Post;
+use File;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -13,8 +14,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderBy("created_at","asc")->paginate(10);
-        
+        $posts = Post::orderBy("created_at", "asc")->paginate(3);
+
         return view('index', compact('posts'));
     }
 
@@ -38,7 +39,7 @@ class PostController extends Controller
             'category_id' => 'required',
             'description' => 'required',
         ]);
-        
+
         $filename = time() . '.' . $request->image->getClientOriginalName();
         $filepath = $request->image->storeAs('uploads', $filename, 'public');
         $post = new Post();
@@ -46,10 +47,10 @@ class PostController extends Controller
         $post->name = $request->title;
         $post->category_id = $request->category_id;
         $post->description = $request->description;
-        $post->save(); 
+        $post->save();
 
         return redirect('/posts');
-        
+
 
     }
 
@@ -58,7 +59,8 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $post = Post::findOrFail($id);
+        return view('show', compact('post'));
     }
 
     /**
@@ -66,7 +68,11 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        return view('edit', compact('id'));
+        $post = Post::find($id);
+        $categories = Category::all();
+
+        return view('update', compact('post', 'categories'));
+
     }
 
     /**
@@ -74,7 +80,35 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // 'image' => 'required|image|mimes:png,jpg,jpeg,gif|max:2048',
+        $this->validate($request, [
+
+            'title' => 'required|string|max:255',
+            'category_id' => 'required',
+            'description' => 'required',
+        ]);
+        $post = Post::findOrFail($id);
+
+        if ($request->hasFile('image')) {
+            $this->validate($request, [
+                'image' => 'required|image|mimes:png,jpg,jpeg,gif|max:2048',
+            ]);
+            
+            $filename = time() . '.' . $request->image->getClientOriginalName();
+            $filepath = $request->image->storeAs('uploads', $filename, 'public');
+
+            File::delete(public_path('storage/' . $post->image));
+
+            $post->image = $filepath;
+        }
+
+        $post->name = $request->title;
+        $post->category_id = $request->category_id;
+        $post->description = $request->description;
+        $post->save();
+        return redirect('/posts');
+
+
     }
 
     /**
@@ -82,6 +116,30 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $post = Post::find($id);
+        $post->delete();
+        return redirect('/posts');
+    }
+
+    public function trashed()
+    {
+        $posts = Post::onlyTrashed()->paginate(10);
+        return view('trash', compact('posts'));
+    }
+
+    public function restore($id)
+    {
+        $post = Post::onlyTrashed()->where('id', $id)->first();
+        $post->restore();
+        return redirect()->back();
+    }
+
+    public function kill($id)
+    {
+        $post = Post::onlyTrashed()->where('id', $id)->first();
+        File::delete(public_path('storage/' . $post->image));
+        $post->forceDelete();
+        return redirect()->back();
     }
 }
+
