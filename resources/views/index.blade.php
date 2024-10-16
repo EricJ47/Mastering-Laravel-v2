@@ -21,22 +21,25 @@
                             <th scope="col" style="width: 10%">action</th>
                         </tr>
                     </thead>
+                    @foreach ($posts as $index => $post) 
                     <tbody>
                         <tr>
-                            <th scope="row">1</th>
+                            
+                            <th scope="row">{{$index + 1}}</th>
                             <td>
-                                <img src="https://picsum.photos/200" width="80" alt="">
+                                <img src="{{ asset('storage/' . $post->image) }}" width="80" alt="">
                             </td>
-                            <td>ahahahahah aja</td>
-                            <td>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Accusamus ipsam fugit, porro, sit
-                                 </td>
-                            <td>Electronic</td>
-                            <td>2-2-2022</td>
+                            <td>{{ $post->name }}</td>
+                            <td>{{ $post->description }}</td>
+                            </td>
+                            <td>{{ $post->category->name }}</td>
+                            <td>{{ $post->created_at ->diffForHumans() }}</td>
                             <td>
                                 <a href="#" class="btn btn-sm btn-outline-success">Show</a>
                                 <a href="#" class="btn btn-sm btn-outline-warning">Edit</a>
                                 <a href="#" class="btn btn-sm btn-outline-danger">Delete</a>
                             </td>
+                            @endforeach
 
                         </tr>
 
@@ -45,3 +48,4 @@
         </div>
     </div>
 @endSection
+
