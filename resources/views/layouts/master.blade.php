@@ -9,7 +9,7 @@
   <body>
     <nav class="navbar bg-body-tertiary">
         <div class="container-fluid">
-          <a class="navbar-brand text-primary" href="#">Navbar</a>
+          <a class="navbar-brand text-primary" href="{{ route('posts.index') }}">Navbar</a>
           
         </div>
       </nav>

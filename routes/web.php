@@ -19,4 +19,8 @@ Route::get('/', function () {
 });
 
 
+Route::get('/posts/trash', [PostController::class, 'trashed'])->name('posts.trashed');
+Route::get('/posts/{id}/restore', [PostController::class, 'restore'])->name('posts.restore');
+Route::delete('/posts/{id}/kill', [PostController::class, 'kill'])->name('posts.kill');
+
 Route::resource('posts', PostController::class);

@@ -4,8 +4,9 @@
     <div class="main-content">
         <div class="card">
             <div class="card-header">
-                All Trashed Posts
-                <a href="{{ route('posts.index') }}" class="btn btn-sm btn-outline-primary float-end">Back</a>
+                Trashed Posts
+                <a href="{{ route('posts.create') }}" class="btn btn-sm btn-outline-primary float-end">Add New</a>
+                <a href="" class="btn btn-sm btn-outline-secondary float-end" style="margin-right: 5px">Trash</a>
             </div>
             <div class="card-body">
                 <table class="table table-striped">
@@ -20,22 +21,32 @@
                             <th scope="col" style="width: 10%">action</th>
                         </tr>
                     </thead>
+                    @foreach ($posts as $index => $post) 
                     <tbody>
                         <tr>
-                            <th scope="row">1</th>
+                            
+                            <th scope="row">{{$index + 1}}</th>
                             <td>
-                                <img src="https://picsum.photos/200" width="80" alt="">
+                                <img src="{{ asset('storage/' . $post->image) }}" width="120" alt="">
                             </td>
-                            <td>ahahahahah aja</td>
-                            <td>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Accusamus ipsam fugit, porro, sit
-                                 </td>
-                            <td>Electronic</td>
-                            <td>2-2-2022</td>
+                            <td>{{ $post->name }}</td>
+                            <td>{{ $post->description }}</td>
+                            </td>
+                            <td>{{ $post->category->name }}</td>
+                            <td>{{ $post->created_at ->diffForHumans() }}</td>
                             <td>
-                                <a href="#" class="btn btn-sm btn-outline-success">Show</a>
-                                <a href="{{ route('posts.update') }}" class="btn btn-sm btn-outline-warning">Edit</a>
-                                <a href="#" class="btn btn-sm btn-outline-danger">Delete</a>
+                                <div class="d-flex">
+                                    <a href="{{ route('posts.restore', $post->id) }}" class="btn btn-sm btn-outline-success">Restore</a>
+                                {{-- <a href="{{ route('posts.destroy', $post->id) }}" class="btn btn-sm btn-outline-danger">Delete</a> --}}
+
+                                <form action="{{ route('posts.kill', $post->id) }}" method="POST" style="display: inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Kill/Delete</button>
+                                </form>
+                                </div>
                             </td>
+                            @endforeach
 
                         </tr>
 
@@ -44,3 +55,4 @@
         </div>
     </div>
 @endSection
+
