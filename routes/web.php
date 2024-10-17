@@ -3,6 +3,7 @@
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\SampleController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 use App\Facades\CustomFacade;
@@ -35,3 +36,15 @@ Route::get('check', function () {
 });
 
 Route::get('blog', [BlogController::class, 'index'])->name('blog');
+
+Route::get('/slug', function () {
+    $title = 'how to create Blog title testing ';
+    $slug =  genSlug($title);
+
+    return $slug;
+});
+
+Route::get('/user/{user:email}', function (User $user) {
+    return $user;
+});
+
