@@ -21,7 +21,7 @@ class SampleController extends Controller
     // }
 
     // public function anotherMethod($para)
-    // {
+    // {app/Services/
 
     //     $para->log('this is another test log from another method');
 

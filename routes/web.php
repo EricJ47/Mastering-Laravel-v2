@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\SampleController;
 use Illuminate\Support\Facades\Route;
+
+use App\Facades\CustomFacade;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,3 +29,9 @@ Route::get('/posts/{id}/restore', [PostController::class, 'restore'])->name('pos
 Route::delete('/posts/{id}/kill', [PostController::class, 'kill'])->name('posts.kill');
 
 Route::resource('posts', PostController::class);
+
+Route::get('check', function () {
+    return CustomFacade::SomeMethod();
+});
+
+Route::get('blog', [BlogController::class, 'index'])->name('blog');
