@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\SampleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,6 +19,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/sample', [SampleController::class, 'index'])->name('sample');
 
 Route::get('/posts/trash', [PostController::class, 'trashed'])->name('posts.trashed');
 Route::get('/posts/{id}/restore', [PostController::class, 'restore'])->name('posts.restore');
