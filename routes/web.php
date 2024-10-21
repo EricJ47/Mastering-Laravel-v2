@@ -114,5 +114,10 @@ Route::get('flash', function (Request $request) {
     return redirect('get-session');
 });
 
+Route::get('forget-cache', function () {
+    Cache::forget('posts');
+    return 'cache cleared';
+});
+
 
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Post;
+use Cache;
 use File;
 use Illuminate\Http\Request;
 
@@ -19,7 +20,15 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderBy("created_at", "asc")->paginate(3);
+
+
+        $posts = Cache::remember('posts-page-'.request('page', 1), 60*60, function () {
+            return Post::orderBy("created_at", "asc")->with('category')->paginate(3);
+        });
+// key=posts=route
+        // $posts = Cache::rememberForever('posts',  function () {
+        //     return Post::with('category')->paginate(3);
+        // });
 
         return view('index', compact('posts'));
     }
@@ -98,7 +107,7 @@ class PostController extends Controller
             $this->validate($request, [
                 'image' => 'required|image|mimes:png,jpg,jpeg,gif|max:2048',
             ]);
-            
+
             $filename = time() . '.' . $request->image->getClientOriginalName();
             $filepath = $request->image->storeAs('uploads', $filename, 'public');
 
