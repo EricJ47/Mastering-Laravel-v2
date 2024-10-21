@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Services\PaymentGateway;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
+use View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,5 +23,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Paginator::useBootstrap();
+
+        View::share('site_name', 'My Laravel Blog');
     }
 }

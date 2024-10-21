@@ -3,6 +3,7 @@
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\SampleController;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -63,6 +64,10 @@ Route::get('/unavailable', function () {
     return view('unavailable');
 })->name('unavailable');
 
+Route::get('/contact', function () {
+    $posts = Post::all();
+    return view('contact', compact('posts'));
+});
 
 
 
