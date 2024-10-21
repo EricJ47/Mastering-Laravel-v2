@@ -23,6 +23,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+// group middleware
+Route::group(['middleware' => 'authchecking'], function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    });
+    Route::get('/profile', function () {
+        return view('profile');
+    });
+});
+
+
 Route::get('/sample', [SampleController::class, 'index'])->name('sample');
 
 Route::get('/posts/trash', [PostController::class, 'trashed'])->name('posts.trashed');
@@ -36,10 +48,9 @@ Route::get('check', function () {
 });
 
 Route::get('blog', [BlogController::class, 'index'])->name('blog');
-
 Route::get('/slug', function () {
     $title = 'how to create Blog title testing ';
-    $slug =  genSlug($title);
+    $slug = genSlug($title);
 
     return $slug;
 });
@@ -47,4 +58,11 @@ Route::get('/slug', function () {
 Route::get('/user/{user:email}', function (User $user) {
     return $user;
 });
+
+Route::get('/unavailable', function () {
+    return view('unavailable');
+})->name('unavailable');
+
+
+
 
