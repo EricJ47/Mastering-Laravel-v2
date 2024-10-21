@@ -3,6 +3,7 @@
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\SampleController;
+use App\Mail\OrderShip;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -68,6 +69,19 @@ Route::get('/contact', function () {
     $posts = Post::all();
     return view('contact', compact('posts'));
 });
+
+
+// Mailing Mailtrap.io
+Route::get('send-mail', function () {
+    // Mail::raw('hello aja gak sih, testing email kedua', function ($message) {
+    //     // $message->subject('test mail')->to('yOgjK@example.com');
+    //     $message->subject('test mail');
+    //     $message->to('oyyoyoygjK@example.com');
+    // });
+
+    Mail::send(new OrderShip());
+    dd('sent');
+    });  
 
 
 
