@@ -7,6 +7,7 @@ use App\Mail\OrderShip;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 use App\Facades\CustomFacade;
 
@@ -82,6 +83,36 @@ Route::get('send-mail', function () {
     Mail::send(new OrderShip());
     dd('sent');
     });  
+
+Route::get('get-session', function (Request $request) {
+    // $data = session()->all();
+
+    $data = $request->session()->all();
+
+    // $data = $request->session()->get('_token');
+    dd($data);
+    
+    // dd(session()->all());
+});
+
+// Http Session
+Route::get('save-session', function (Request $request) {
+    // $request->session()->put('user_token', '3123');
+    // $request->session()->put(['user_status' => 'active']);
+    // Session(['user_ip' => '127.0.0.1']);
+    return redirect('get-session');
+});
+Route::get('delete-session', function (Request $request) {
+    // $request->session()->forget('user_token');
+    // Session()->forget('user_ip');
+    // $request->session()->forget(['user_status', 'user_ip']);
+    session()->flush();
+    return redirect('get-session');
+});
+Route::get('flash', function (Request $request) {
+    $request->session()->flash('status', 'Data Saved');
+    return redirect('get-session');
+});
 
 
 
