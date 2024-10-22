@@ -12,8 +12,8 @@ class PostController extends Controller
 {
     public function __construct()
     {
-        // $this->middleware('authcheck2', ['except' => ['index', 'show']]);
-        $this->middleware("authcheck", ['only' => ['create', 'store', 'edit', 'update', 'destroy']]);
+        // $this->middleware('authcheck2', ['except' => ['index', 'show','create']]);
+        // $this->middleware("authcheck2", ['only' => ['create', 'store', 'edit', 'update', 'destroy']]);
     }
     /**
      * Display a listing of the resource.
