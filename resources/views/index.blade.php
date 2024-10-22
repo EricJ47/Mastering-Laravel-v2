@@ -5,9 +5,11 @@
         <div class="card">
             <div class="card-header">
                 All Posts
-                <a href="{{ route('posts.create') }}" class="btn btn-sm btn-outline-primary float-end">Add New</a>
-                <a href="{{ route('posts.trashed') }}" class="btn btn-sm btn-outline-secondary float-end"
-                    style="margin-right: 5px">Trash</a>
+                @can('create', \App\Models\Post::class)
+                    <a href="{{ route('posts.create') }}" class="btn btn-sm btn-outline-primary float-end">Add New</a>
+                <a href="{{ route('posts.trashed') }}" class="btn btn-sm btn-outline-secondary float-end" 
+                style="margin-right: 5px">Trash</a>
+                @endcan
             </div>
             <div class="card-body">
                 <table class="table table-striped">
@@ -38,16 +40,19 @@
                                 <td>
                                     <a href="{{ route('posts.show', $post->id) }}"
                                         class="btn btn-sm btn-outline-success">Show</a>
-                                    <a href="{{ route('posts.edit', $post->id) }}"
-                                        class="btn btn-sm btn-outline-warning">Edit</a>
+                                    @can('update', $post)
+                                        <a href="{{ route('posts.edit', $post->id) }}"
+                                            class="btn btn-sm btn-outline-warning">Edit</a>
+                                    @endcan
                                     {{-- <a href="{{ route('posts.destroy', $post->id) }}" class="btn btn-sm btn-outline-danger">Delete</a> --}}
-
-                                    <form action="{{ route('posts.destroy', $post->id) }}" method="POST"
-                                        style="display: inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-                                    </form>
+                                    @can('delete', $post)
+                                        <form action="{{ route('posts.destroy', $post->id) }}" method="POST"
+                                            style="display: inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                        </form>
+                                    @endcan
                                 </td>
 
                             </tr>

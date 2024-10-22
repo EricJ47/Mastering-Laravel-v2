@@ -38,6 +38,8 @@ class PostController extends Controller
      */
     public function create()
     {
+        // $this->authorize('create_post');
+        $this->authorize('create', Post::class);
         $categories = Category::all();
         return view('create', compact('categories'));
     }
@@ -47,6 +49,8 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Post::class);
+
         $this->validate($request, [
             'image' => 'required|image|mimes:png,jpg,jpeg,gif|max:2048',
             'title' => 'required|max:255',
@@ -83,6 +87,7 @@ class PostController extends Controller
     public function edit(string $id)
     {
         $post = Post::find($id);
+        $this->authorize('update', $post);
         $categories = Category::all();
 
         return view('update', compact('post', 'categories'));
@@ -94,6 +99,11 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $post = Post::findOrFail($id);
+        $this->authorize('update', $post);
+        
+        // $this->authorize('update', Post::class);
+
         // 'image' => 'required|image|mimes:png,jpg,jpeg,gif|max:2048',
         $this->validate($request, [
 
@@ -101,7 +111,7 @@ class PostController extends Controller
             'category_id' => 'required',
             'description' => 'required',
         ]);
-        $post = Post::findOrFail($id);
+        
 
         if ($request->hasFile('image')) {
             $this->validate($request, [
@@ -131,18 +141,24 @@ class PostController extends Controller
     public function destroy(string $id)
     {
         $post = Post::find($id);
+        $this->authorize('delete', $post);
+        
         $post->delete();
         return redirect('/posts');
     }
 
     public function trashed()
     {
+        $this->authorize('delete_post');
+
         $posts = Post::onlyTrashed()->paginate(10);
         return view('trash', compact('posts'));
     }
 
     public function restore($id)
     {
+        $this->authorize('delete_post');
+
         $post = Post::onlyTrashed()->where('id', $id)->first();
         $post->restore();
         return redirect()->back();
@@ -150,6 +166,8 @@ class PostController extends Controller
 
     public function kill($id)
     {
+        $this->authorize('delete_post');
+
         $post = Post::onlyTrashed()->where('id', $id)->first();
         File::delete(public_path('storage/' . $post->image));
         $post->forceDelete();
