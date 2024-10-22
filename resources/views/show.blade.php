@@ -61,14 +61,18 @@
                         <tr>
                             <td></td>
                             <td>
-                                <a href="{{ route('posts.edit', $post->id) }}"
-                                    class="btn btn-sm btn-outline-warning float-end ">Edit</a>
-                                <form action="{{ route('posts.destroy', $post->id) }}" method="POST"
-                                    style="display: inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-outline-danger float-end">Delete</button>
-                                </form>
+                                @can('edit')
+                                    <a href="{{ route('posts.edit', $post->id) }}"
+                                        class="btn btn-sm btn-outline-warning float-end ">Edit</a>
+                                @endcan
+                                @can('delete')
+                                    <form action="{{ route('posts.destroy', $post->id) }}" method="POST"
+                                        style="display: inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-outline-danger float-end">Delete</button>
+                                    </form>
+                                @endcan
                             </td>
                         </tr>
 
