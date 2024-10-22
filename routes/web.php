@@ -3,6 +3,8 @@
 
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Jobs\SendMail;
+use App\Mail\PostPublished;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,6 +42,25 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/posts/{id}/kill', [PostController::class, 'kill'])->name('posts.kill');
 
     Route::resource('posts', PostController::class);
+});
+
+Route::get('send-mail', function () {
+    // Mail::raw('hello aja gak sih, testing email kedua', function ($message) {
+    
+    // Mail::send('Html.view', $data, function ($message) {
+    //     $message->from('john@johndoe.com', 'John Doe');
+    //     $message->sender('john@johndoe.com', 'John Doe');
+    //     $message->to('john@johndoe.com', 'John Doe');
+    //     $message->cc('john@johndoe.com', 'John Doe');
+    //     $message->bcc('john@johndoe.com', 'John Doe');
+    //     $message->replyTo('john@johndoe.com', 'John Doe');
+    //     $message->subject('Subject');
+    //     $message->priority(3);
+    //     $message->attach('pathToFile');
+    // });
+
+    SendMail::dispatch();
+    dd('sent');
 });
 
 
