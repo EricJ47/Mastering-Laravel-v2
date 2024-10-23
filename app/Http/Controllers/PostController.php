@@ -22,10 +22,10 @@ class PostController extends Controller
     {
 
 
-        $posts = Cache::remember('posts-page-'.request('page', 1), 60*60, function () {
+        $posts = Cache::remember('posts-page-' . request('page', 1), 60 * 60, function () {
             return Post::orderBy("created_at", "asc")->with('category')->paginate(3);
         });
-// key=posts=route
+        // key=posts=route
         // $posts = Cache::rememberForever('posts',  function () {
         //     return Post::with('category')->paginate(3);
         // });
@@ -101,7 +101,7 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
         $this->authorize('update', $post);
-        
+
         // $this->authorize('update', Post::class);
 
         // 'image' => 'required|image|mimes:png,jpg,jpeg,gif|max:2048',
@@ -111,7 +111,7 @@ class PostController extends Controller
             'category_id' => 'required',
             'description' => 'required',
         ]);
-        
+
 
         if ($request->hasFile('image')) {
             $this->validate($request, [
@@ -142,7 +142,7 @@ class PostController extends Controller
     {
         $post = Post::find($id);
         $this->authorize('delete', $post);
-        
+
         $post->delete();
         return redirect('/posts');
     }

@@ -4,22 +4,23 @@ namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Mail\Attachment;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class OrderShip extends Mailable
+class WellcomeMail extends Mailable
 {
     use Queueable, SerializesModels;
+
+    public $userEmail = '';
 
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($email)
     {
-        //
+        $this->userEmail = $email;
     }
 
     /**
@@ -28,9 +29,8 @@ class OrderShip extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            to: ['yOgjK@example.com'],
-            from: 'yohohoho@example.com',
-            subject: 'Order Ship',
+            to : $this->userEmail,
+            subject: 'Wellcomend Mail',
         );
     }
 
@@ -40,7 +40,7 @@ class OrderShip extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.shipping',
+            view: 'emails.wellcomemail',
         );
     }
 
@@ -51,8 +51,6 @@ class OrderShip extends Mailable
      */
     public function attachments(): array
     {
-        return [
-            Attachment::fromPath(public_path('/storage/uploads/1729067469.cute-anime-girl-peace-sign-4k-wallpaper-uhdpaper.com-119@2@a.jpg'))
-        ];
+        return [];
     }
 }
