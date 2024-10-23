@@ -88,6 +88,16 @@ Route::get('listener', function () {
     return view('get-notification');
 });
 
+// en,id
+Route::get('greeting/{locale}', function ($locale) {
+
+    App::setLocale($locale);
+
+    return view('greeting');
+})->name('greeting');
+
+
+
 
 
 
