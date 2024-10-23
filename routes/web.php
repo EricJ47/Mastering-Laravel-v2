@@ -1,6 +1,8 @@
 
 <?php
 
+use App\Events\MyEvent;
+use App\Events\UserRegistered;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Jobs\SendMail;
@@ -61,6 +63,29 @@ Route::get('send-mail', function () {
 
     SendMail::dispatch();
     dd('sent');
+});
+
+Route::get('user-registerd', function () {
+    $email = 'johny@sin.com';
+    event(new UserRegistered($email));
+    dd('sent');
+});
+
+Route::get('event', function () {
+    return view('create-notification');
+});
+Route::post('event', function (Request $request) 
+{
+    $message = Request::input('message');
+    event(new MyEvent($message));
+
+    // dd($message);
+    return redirect()->back();
+})->name('event.message');
+
+
+Route::get('listener', function () {
+    return view('get-notification');
 });
 
 
